@@ -1,0 +1,414 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>I-fe — Software engineering by Ifeoluwa Jokotola</title>
+<meta name="description" content="I-fe is the independent engineering practice of Ifeoluwa Jokotola — product engineering for banking, commerce and logistics platforms.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300..700;1,9..144,400..600&family=Public+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --paper:#FFFFFF; --paper-alt:#F6F6F3; --ink:#0E0F12; --ink-soft:#54565C; --ink-faint:#93949A;
+  --line:#E7E5DF; --accent:#3548C4; --accent-2:#C9862F; --glow:rgba(53,72,196,.16);
+  --serif:'Fraunces',Georgia,serif; --sans:'Public Sans',-apple-system,sans-serif;
+  --mx:50%; --my:30%;
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+html{scroll-padding-top:90px;-webkit-text-size-adjust:100%;}
+@media (prefers-reduced-motion:no-preference){html{scroll-behavior:smooth;}}
+body{background:var(--paper);color:var(--ink);font-family:var(--sans);line-height:1.5;-webkit-font-smoothing:antialiased;overflow-x:hidden;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px);}
+a{color:inherit;text-decoration:none;} ul{list-style:none;} img{max-width:100%;display:block;}
+.wrap{max-width:1180px;margin:0 auto;padding:0 40px;}
+@media(max-width:900px){.wrap{padding:0 28px;}} @media(max-width:520px){.wrap{padding:0 20px;}}
+h1,h2,h3{font-family:var(--serif);font-weight:500;letter-spacing:-0.01em;color:var(--ink);}
+.eyebrow{font-size:.8rem;color:var(--ink-faint);margin-bottom:14px;}
+::selection{background:var(--accent);color:#fff;}
+:focus-visible{outline:2px solid var(--accent);outline-offset:3px;}
+
+/* reveal */
+.rv{opacity:0;transform:translateY(28px);transition:opacity .8s cubic-bezier(.2,.7,.2,1),transform .8s cubic-bezier(.2,.7,.2,1);}
+.rv.in{opacity:1;transform:translateY(0);}
+@media(prefers-reduced-motion:reduce){.rv{opacity:1;transform:none;transition:none;}}
+
+/* nav */
+.nav{position:fixed;top:0;left:0;right:0;z-index:100;padding-top:env(safe-area-inset-top,0px);background:rgba(255,255,255,.001);border-bottom:1px solid transparent;transition:border-color .35s,background .35s;}
+.nav.scrolled{border-bottom-color:var(--line);background:var(--paper);}
+.nav-inner{display:flex;align-items:center;justify-content:space-between;height:76px;}
+.logo{font-family:var(--serif);font-size:1.4rem;font-weight:500;transition:letter-spacing .35s ease;}
+.logo:hover{letter-spacing:.02em;}
+.logo .tld{font-size:.85rem;color:var(--ink-faint);font-family:var(--sans);font-weight:500;margin-left:2px;}
+.nav-links{display:flex;align-items:center;gap:38px;}
+.nav-links a:not(.btn){font-size:.94rem;color:var(--ink-soft);position:relative;padding-bottom:3px;}
+.nav-links a:not(.btn)::after{content:"";position:absolute;left:0;bottom:0;width:100%;height:1px;background:var(--ink);transform:scaleX(0);transform-origin:right;transition:transform .3s;}
+.nav-links a:not(.btn):hover{color:var(--ink);}
+.nav-links a:not(.btn):hover::after{transform:scaleX(1);transform-origin:left;}
+.btn{display:inline-flex;align-items:center;font-family:var(--sans);font-weight:600;font-size:.92rem;padding:12px 22px;border-radius:3px;border:1px solid var(--ink);background:var(--ink);color:var(--paper);transition:background .25s,color .25s,box-shadow .3s,transform .15s;cursor:pointer;}
+.btn:hover{box-shadow:0 8px 24px -8px var(--glow),0 0 0 1px var(--ink);transform:translateY(-1px);}
+.btn.ghost{background:transparent;color:var(--ink);}
+.btn.ghost:hover{background:var(--ink);color:var(--paper);}
+.btn.on-dark{border-color:var(--paper);background:var(--paper);color:var(--ink);}
+.magnetic{will-change:transform;}
+.burger{display:none;width:34px;height:24px;position:relative;background:none;border:0;cursor:pointer;}
+.burger span{position:absolute;left:0;right:0;height:1px;background:var(--ink);transition:transform .3s,opacity .3s;}
+.burger span:nth-child(1){top:2px;} .burger span:nth-child(2){top:11px;} .burger span:nth-child(3){top:20px;}
+.burger.open span:nth-child(1){transform:translateY(9px) rotate(45deg);}
+.burger.open span:nth-child(2){opacity:0;}
+.burger.open span:nth-child(3){transform:translateY(-9px) rotate(-45deg);}
+.mobile-panel{position:fixed;inset:0;z-index:99;background:var(--paper);display:flex;flex-direction:column;justify-content:space-between;padding:calc(110px + env(safe-area-inset-top,0px)) 28px 40px;transform:translateY(-100%);transition:transform .45s cubic-bezier(.65,0,.35,1);}
+.mobile-panel.open{transform:translateY(0);}
+.mobile-panel a{font-family:var(--serif);font-size:2.1rem;font-weight:500;}
+.mobile-panel ul{display:flex;flex-direction:column;gap:20px;}
+.mobile-panel .m-social{display:flex;gap:22px;flex-wrap:wrap;}
+.mobile-panel .m-social a{font-family:var(--sans);font-size:.95rem;color:var(--ink-soft);}
+@media(max-width:820px){.nav-links{display:none;} .burger{display:block;}}
+
+section{padding:120px 0;position:relative;} @media(max-width:820px){section{padding:80px 0;}}
+
+/* hero */
+.hero{padding-top:calc(76px + 90px);position:relative;overflow:hidden;}
+@media(max-width:820px){.hero{padding-top:calc(76px + 50px);}}
+#field{position:absolute;inset:0;width:100%;height:100%;opacity:.55;pointer-events:none;}
+.spotlight{position:absolute;inset:0;pointer-events:none;background:radial-gradient(560px circle at var(--mx) var(--my), var(--glow), transparent 60%);transition:opacity .4s;}
+.hero-grid{position:relative;display:grid;grid-template-columns:1.6fr 1fr;gap:64px;align-items:end;}
+@media(max-width:960px){.hero-grid{grid-template-columns:1fr;gap:52px;}}
+.hero h1{font-size:clamp(2.6rem,5.8vw,4.8rem);line-height:1.05;}
+.hero h1 .line{display:block;overflow:hidden;}
+.hero h1 .line span{display:block;transform:translateY(112%);animation:riseIn .9s cubic-bezier(.2,.7,.2,1) forwards;}
+.hero h1 .line:nth-child(1) span{animation-delay:.05s;} .hero h1 .line:nth-child(2) span{animation-delay:.2s;}
+@keyframes riseIn{to{transform:translateY(0);}}
+.hero .sub{font-family:var(--serif);font-style:italic;font-weight:400;font-size:1.2rem;color:var(--ink-soft);max-width:34em;margin-top:26px;opacity:0;animation:fadeUp .8s ease forwards;animation-delay:.55s;}
+@keyframes fadeUp{from{opacity:0;transform:translateY(10px);}to{opacity:1;transform:translateY(0);}}
+@media(prefers-reduced-motion:reduce){.hero h1 .line span,.hero .sub{animation:none;transform:none;opacity:1;}}
+.hero .cta-row{display:flex;gap:16px;margin-top:38px;flex-wrap:wrap;}
+.fact-box{border:1px solid var(--line);position:relative;}
+.fact{padding:22px 26px;border-top:1px solid var(--line);transition:background .3s;}
+.fact:first-child{border-top:none;} .fact:hover{background:var(--paper-alt);}
+.fact .num{font-family:var(--serif);font-size:2.1rem;font-weight:500;}
+.fact .lbl{font-size:.87rem;color:var(--ink-soft);margin-top:4px;max-width:22em;}
+
+/* marquee */
+.marquee{border-top:1px solid var(--line);border-bottom:1px solid var(--line);background:var(--paper-alt);overflow:hidden;padding:22px 0;}
+.marquee-track{display:flex;width:max-content;animation:scroll-x 32s linear infinite;}
+@media(prefers-reduced-motion:reduce){.marquee-track{animation:none;}}
+@keyframes scroll-x{from{transform:translateX(0);}to{transform:translateX(-50%);}}
+.marquee-track span{font-family:var(--serif);font-size:1.6rem;color:transparent;-webkit-text-stroke:1px var(--ink-faint);padding:0 34px;white-space:nowrap;}
+.marquee-track span.fill{color:var(--ink);-webkit-text-stroke:0;}
+
+.sec-head{display:flex;justify-content:space-between;align-items:flex-end;gap:40px;margin-bottom:64px;border-bottom:1px solid var(--line);padding-bottom:28px;}
+.sec-head h2{font-size:clamp(2rem,3.4vw,2.7rem);}
+.sec-head p{color:var(--ink-soft);max-width:26em;}
+@media(max-width:700px){.sec-head{flex-direction:column;align-items:flex-start;gap:14px;}}
+
+.service-row{display:grid;grid-template-columns:.9fr 1.6fr;gap:40px;padding:34px 0;border-top:1px solid var(--line);transition:padding-left .35s,background .35s;}
+.service-row:last-child{border-bottom:1px solid var(--line);}
+.service-row:hover{padding-left:14px;background:var(--paper-alt);}
+.service-row h3{font-size:1.4rem;font-weight:500;transition:color .3s;}
+.service-row:hover h3{color:var(--accent);}
+.service-row p{color:var(--ink-soft);max-width:38em;}
+@media(max-width:700px){.service-row{grid-template-columns:1fr;gap:10px;}}
+
+.work-list{position:relative;border-top:1px solid var(--line);}
+.work-row{display:grid;grid-template-columns:2fr 2fr 1fr;gap:24px;align-items:center;padding:30px 4px;border-bottom:1px solid var(--line);position:relative;transition:background .3s;}
+.work-row:hover{background:var(--paper-alt);}
+.work-row .name{font-family:var(--serif);font-size:1.55rem;font-weight:500;display:flex;align-items:center;gap:14px;transition:color .3s;}
+.work-row .swatch{width:12px;height:12px;flex:none;border-radius:50%;background:var(--dot,var(--accent));box-shadow:0 0 0 0 var(--dot);transition:box-shadow .3s;}
+.work-row:hover .swatch{box-shadow:0 0 16px 2px var(--dot);}
+.work-row .desc{color:var(--ink-soft);font-size:.96rem;max-width:32em;}
+.work-row .meta{text-align:right;} .work-row .tag{font-size:.84rem;color:var(--ink-faint);display:block;}
+.work-row .visit{font-size:.86rem;margin-top:6px;display:inline-block;position:relative;color:var(--ink-soft);}
+.work-row .visit::after{content:"";position:absolute;left:0;bottom:-2px;width:100%;height:1px;background:var(--ink-soft);transform:scaleX(0);transform-origin:right;transition:transform .3s;}
+.work-row:hover .visit::after{transform:scaleX(1);transform-origin:left;}
+.work-row:hover .name{color:var(--accent);}
+@media(max-width:760px){.work-row{grid-template-columns:1fr;gap:6px;padding:26px 4px;} .work-row .meta{text-align:left;margin-top:6px;}}
+.preview{position:absolute;top:0;right:0;width:230px;height:150px;display:flex;align-items:center;justify-content:center;color:#fff;font-family:var(--serif);font-size:2.4rem;opacity:0;pointer-events:none;transform:translateY(-50%) scale(.94);transition:opacity .25s,transform .25s;z-index:2;border-radius:4px;box-shadow:0 20px 44px -16px rgba(0,0,0,.35);}
+.preview.show{opacity:1;transform:translateY(-50%) scale(1);}
+@media(max-width:900px){.preview{display:none;}}
+
+.about-grid{display:grid;grid-template-columns:1.3fr 1fr;gap:72px;}
+@media(max-width:900px){.about-grid{grid-template-columns:1fr;gap:48px;}}
+.about-grid .lede{font-family:var(--serif);font-style:italic;font-size:1.5rem;line-height:1.45;margin-bottom:26px;font-weight:400;}
+.about-grid .body p{color:var(--ink-soft);font-size:1.03rem;line-height:1.7;margin-bottom:18px;max-width:38em;}
+.now-line{margin-top:30px;padding-top:24px;border-top:1px solid var(--line);font-size:.94rem;color:var(--ink-soft);}
+.now-line strong{color:var(--ink);font-weight:600;}
+.about-stats{border-bottom:1px solid var(--line);}
+.stat{padding:26px 0;border-top:1px solid var(--line);} .stat:last-child{padding-bottom:0;}
+.stat .num{font-family:var(--serif);font-size:2.3rem;font-weight:500;}
+.stat .lbl{color:var(--ink-soft);font-size:.9rem;margin-top:4px;}
+
+.contact{background:var(--ink);color:var(--paper);overflow:hidden;}
+.contact .spotlight{background:radial-gradient(620px circle at var(--mx) var(--my), rgba(141,160,255,.14), transparent 62%);}
+.contact .eyebrow{color:#82838A;}
+.contact h2{color:var(--paper);font-size:clamp(2.2rem,5vw,3.6rem);max-width:16em;}
+.contact .sub{color:#B9B7B1;max-width:34em;margin-top:18px;font-size:1.05rem;}
+.contact-actions{margin-top:46px;display:flex;flex-wrap:wrap;gap:18px;align-items:center;position:relative;}
+.email-link{font-family:var(--serif);font-size:clamp(1.4rem,3vw,2rem);color:var(--paper);border-bottom:1px solid #454750;padding-bottom:6px;transition:border-color .3s,text-shadow .3s;background:none;cursor:pointer;}
+.email-link:hover{border-color:var(--paper);text-shadow:0 0 26px rgba(141,160,255,.45);}
+.copy-note{font-size:.8rem;color:#82838A;opacity:0;transition:opacity .3s;}
+.copy-note.show{opacity:1;}
+.contact-meta{margin-top:52px;display:flex;flex-wrap:wrap;gap:36px 44px;border-top:1px solid #2B2C32;padding-top:34px;position:relative;}
+.contact-meta .col span{display:block;color:#82838A;font-size:.82rem;margin-bottom:8px;}
+.contact-meta .col a{display:block;margin-bottom:4px;font-size:.96rem;color:#DEDCD5;transition:color .25s;}
+.contact-meta .col a:hover{color:var(--paper);}
+
+footer{background:var(--ink);color:#66686E;}
+.footer-inner{display:flex;justify-content:space-between;padding:26px 0 calc(26px + env(safe-area-inset-bottom,0px));border-top:1px solid #2B2C32;font-size:.82rem;flex-wrap:wrap;gap:10px;}
+</style>
+</head>
+<body>
+
+<nav class="nav" id="nav">
+  <div class="wrap nav-inner">
+    <a href="#top" class="logo">I-fe<span class="tld">.ca</span></a>
+    <div class="nav-links">
+      <a href="#work">Work</a><a href="#services">Services</a><a href="#about">About</a>
+      <a href="#contact" class="btn ghost magnetic">Start a project</a>
+    </div>
+    <button class="burger" id="burger" aria-label="Open menu" aria-expanded="false"><span></span><span></span><span></span></button>
+  </div>
+</nav>
+
+<div class="mobile-panel" id="mpanel">
+  <ul>
+    <li><a href="#work">Work</a></li><li><a href="#services">Services</a></li>
+    <li><a href="#about">About</a></li><li><a href="#contact">Contact</a></li>
+  </ul>
+  <div class="m-social">
+    <a href="https://linkedin.com/in/ifeoluwa-jokotola" target="_blank" rel="noopener">LinkedIn</a>
+    <a href="https://github.com/JokotolaIfe" target="_blank" rel="noopener">GitHub</a>
+    <a href="https://x.com/JokotolaIfeolu1" target="_blank" rel="noopener">X</a>
+    <a href="https://instagram.com/jokotolaifeoluwa" target="_blank" rel="noopener">Instagram</a>
+  </div>
+</div>
+
+<main id="top">
+  <section class="hero">
+    <canvas id="field"></canvas>
+    <div class="spotlight" id="spot1"></div>
+    <div class="wrap hero-grid">
+      <div>
+        <h1><span class="line"><span>We build the software</span></span><span class="line"><span>real businesses run on.</span></span></h1>
+        <p class="sub">Nine years engineering products for banking, commerce and logistics — from the first line of code to a platform a million people use daily.</p>
+        <div class="cta-row">
+          <a href="#work" class="btn magnetic">See selected work</a>
+          <a href="#contact" class="btn ghost magnetic">Start a project</a>
+        </div>
+      </div>
+      <div class="fact-box rv">
+        <div class="fact"><div class="num" data-count="9" data-suffix="+">0</div><div class="lbl">Years in production engineering</div></div>
+        <div class="fact"><div class="num" data-count="1" data-suffix="M+">0</div><div class="lbl">Active users on platforms we maintain</div></div>
+        <div class="fact"><div class="num" data-count="6" data-suffix="+">0</div><div class="lbl">Industries: banking, retail, logistics, HR, AI, gaming and many more</div></div>
+      </div>
+    </div>
+  </section>
+
+  <div class="marquee"><div class="marquee-track" id="mtrack"></div></div>
+
+  <section id="services">
+    <div class="wrap">
+      <div class="sec-head rv"><h2>Services</h2><p>What we actually do, day to day — not a menu of buzzwords.</p></div>
+      <div class="service-row rv"><h3>Product engineering</h3><p>End-to-end builds across web and mobile, from architecture through to a shipped release — in React, TypeScript and native stacks.</p></div>
+      <div class="service-row rv"><h3>Fintech &amp; commerce systems</h3><p>Secure, high-traffic platforms for banking, payments and online retail, built to hold up under real transaction volume, not demo traffic.</p></div>
+      <div class="service-row rv"><h3>Interface design &amp; UX</h3><p>Interfaces that feel obvious to use, shaped through direct work with product and design teams rather than dropped in from a template.</p></div>
+      <div class="service-row rv"><h3>Support &amp; reliability</h3><p>Ongoing updates, performance tuning and bug resolution for platforms that are already live and already have users depending on them.</p></div>
+    </div>
+  </section>
+
+  <section id="work">
+    <div class="wrap">
+      <div class="sec-head rv"><h2>Selected projects</h2><p>A curated set of platforms we've designed and engineered for founders and product teams.</p></div>
+      <div class="work-list" id="worklist">
+        <div class="work-row rv" data-dot="#3548C4" data-letter="A">
+          <a class="name" href="https://abegverify.ng" target="_blank" rel="noopener"><span class="swatch" style="--dot:#3548C4"></span>AbegVerify</a>
+          <p class="desc">Identity verification platform for confirming documents and credentials in real time.</p>
+          <div class="meta"><span class="tag">Fintech, identity</span><a class="visit" href="https://abegverify.ng" target="_blank" rel="noopener">abegverify.ng</a></div>
+        </div>
+        <div class="work-row rv" data-dot="#8A5A2B" data-letter="P">
+          <a class="name" href="https://priscaai.com" target="_blank" rel="noopener"><span class="swatch" style="--dot:#8A5A2B"></span>Prisca AI</a>
+          <p class="desc">AI-assisted platform for cleaning messy datasets and generating predictive models from them.</p>
+          <div class="meta"><span class="tag">AI, data</span><a class="visit" href="https://priscaai.com" target="_blank" rel="noopener">priscaai.com</a></div>
+        </div>
+        <div class="work-row rv" data-dot="#2E7D5B" data-letter="S">
+          <a class="name" href="https://sabi-post.web.app" target="_blank" rel="noopener"><span class="swatch" style="--dot:#2E7D5B"></span>SabiPost</a>
+          <p class="desc">Ecommerce marketplace built for fast browsing, checkout and order tracking.</p>
+          <div class="meta"><span class="tag">Commerce</span><a class="visit" href="https://sabi-post.web.app" target="_blank" rel="noopener">sabi-post.web.app</a></div>
+        </div>
+        <div class="work-row rv" data-dot="#B4552B" data-letter="S">
+          <a class="name" href="https://streetwise-delivery.web.app" target="_blank" rel="noopener"><span class="swatch" style="--dot:#B4552B"></span>Streetwise Delivery</a>
+          <p class="desc">Delivery and logistics platform connecting riders, orders and customers in one flow.</p>
+          <div class="meta"><span class="tag">Logistics</span><a class="visit" href="https://streetwise-delivery.web.app" target="_blank" rel="noopener">streetwise-delivery.web.app</a></div>
+        </div>
+        <div class="work-row rv" data-dot="#4A4E9C" data-letter="R">
+          <a class="name" href="https://retrac365.web.app" target="_blank" rel="noopener"><span class="swatch" style="--dot:#4A4E9C"></span>Retrac 365</a>
+          <p class="desc">Hiring platform that manages listings, applicants and screening for growing teams.</p>
+          <div class="meta"><span class="tag">HR tech</span><a class="visit" href="https://retrac365.web.app" target="_blank" rel="noopener">retrac365.web.app</a></div>
+        </div>
+        <div class="work-row rv" data-dot="#9C7A2B" data-letter="A">
+          <a class="name" href="https://awalife.com.ng" target="_blank" rel="noopener"><span class="swatch" style="--dot:#9C7A2B"></span>AwaLife</a>
+          <p class="desc">Consumer lottery platform handling entries, draws and payouts at scale.</p>
+          <div class="meta"><span class="tag">Consumer, gaming</span><a class="visit" href="https://awalife.com.ng" target="_blank" rel="noopener">awalife.com.ng</a></div>
+        </div>
+        <div class="preview" id="preview">A</div>
+      </div>
+    </div>
+  </section>
+
+  <section id="about">
+    <div class="wrap about-grid">
+      <div class="rv">
+        <p class="lede">We're I-fe — the engineering practice built around Ifeoluwa Jokotola.</p>
+        <div class="body">
+          <p>For the past nine years we've built web and mobile products across banking, retail and logistics, currently leading engineering on a banking platform used by more than a million people. We care about code that holds up under real traffic, and interfaces that don't need an explanation.</p>
+          <p>Most projects start the same way: a founder or team with a real problem, and not enough engineering hours to solve it properly. That's where we come in — we take on a small number of projects at a time and see each one through, from architecture to release.</p>
+          <p>The name is a nod to Ile-Ife, the city Yoruba history points to as the place things began — a fitting starting point for building foundations other people's businesses can run on.</p>
+        </div>
+        <div class="now-line">Currently: <strong>Lead Software Engineer, Fidelity Bank Plc</strong> — leading updates and reliability for a platform serving 1M+ active users.</div>
+      </div>
+      <div class="about-stats rv">
+        <div class="stat"><div class="num" data-count="9" data-suffix="+">0</div><div class="lbl">Years engineering production software</div></div>
+        <div class="stat"><div class="num" data-count="5" data-suffix="">0</div><div class="lbl">Teams and companies, from startups to a national bank</div></div>
+        <div class="stat"><div class="num" data-count="94" data-suffix="%">0</div><div class="lbl">Client satisfaction across delivered projects</div></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="contact" id="contact">
+    <div class="spotlight" id="spot2"></div>
+    <div class="wrap">
+      <p class="eyebrow rv">Get in touch</p>
+      <h2 class="rv">Have a product to build?</h2>
+      <p class="sub rv">We take on a small number of projects at a time. Tell us what you're building, and we'll reply within a day or two.</p>
+      <div class="contact-actions rv">
+        <button class="email-link" id="emailBtn">jaywebs0@gmail.com</button>
+        <span class="copy-note" id="copyNote">Copied to clipboard</span>
+      </div>
+      <div class="contact-meta rv">
+        <div class="col"><span>Phone</span><a href="tel:+18078671630">+1 (807) 867 1630</a></div>
+        <div class="col"><span>Elsewhere</span><a href="https://linkedin.com/in/ifeoluwa-jokotola" target="_blank" rel="noopener">LinkedIn</a><a href="https://github.com/JokotolaIfe" target="_blank" rel="noopener">GitHub</a></div>
+        <div class="col"><span>Social</span><a href="https://x.com/JokotolaIfeolu1" target="_blank" rel="noopener">X / Twitter</a><a href="https://instagram.com/jokotolaifeoluwa" target="_blank" rel="noopener">Instagram</a></div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer><div class="wrap footer-inner"><span>I-fe.ca — © 2026 Ifeoluwa</span><span>Designed &amp; by I-fe team</span></div></footer>
+
+<script>
+const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+const canHover = window.matchMedia('(hover: hover) and (pointer: fine)').matches;
+
+// nav shadow + mobile menu
+const nav=document.getElementById('nav');
+window.addEventListener('scroll',()=>nav.classList.toggle('scrolled',window.scrollY>8),{passive:true});
+const burger=document.getElementById('burger'),mpanel=document.getElementById('mpanel');
+burger.addEventListener('click',()=>{const open=mpanel.classList.toggle('open');burger.classList.toggle('open',open);burger.setAttribute('aria-expanded',open?'true':'false');document.body.style.overflow=open?'hidden':'';});
+mpanel.querySelectorAll('a').forEach(a=>a.addEventListener('click',()=>{mpanel.classList.remove('open');burger.classList.remove('open');document.body.style.overflow='';}));
+
+// marquee content
+const words=['Banking','Commerce','Logistics','Artificial Intelligence','HR Tech','Gaming'];
+const track=document.getElementById('mtrack');
+for(let r=0;r<2;r++){words.forEach((w,i)=>{const s=document.createElement('span');s.textContent=w;if((i+r)%3===0)s.classList.add('fill');track.appendChild(s);});}
+
+// scroll reveal
+if('IntersectionObserver' in window){
+  const io=new IntersectionObserver((entries)=>{entries.forEach(e=>{if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target);}});},{threshold:.15,rootMargin:'0px 0px -60px 0px'});
+  document.querySelectorAll('.rv').forEach(el=>io.observe(el));
+}
+
+// count up
+function animateCount(el){
+  const target=parseFloat(el.dataset.count),suffix=el.dataset.suffix||'';
+  const dur=1200,start=performance.now();
+  function tick(now){
+    const p=Math.min((now-start)/dur,1);
+    const eased=1-Math.pow(1-p,3);
+    el.textContent=Math.round(target*eased)+suffix;
+    if(p<1)requestAnimationFrame(tick);
+  }
+  requestAnimationFrame(tick);
+}
+if('IntersectionObserver' in window){
+  const nums=document.querySelectorAll('.num[data-count]');
+  const io2=new IntersectionObserver((entries)=>{entries.forEach(e=>{if(e.isIntersecting){reduced?e.target.textContent=e.target.dataset.count+(e.target.dataset.suffix||''):animateCount(e.target);io2.unobserve(e.target);}});},{threshold:.6});
+  nums.forEach(n=>io2.observe(n));
+}
+
+// cursor spotlight
+const spots=[document.getElementById('spot1'),document.getElementById('spot2')].filter(Boolean);
+if(canHover && !reduced){
+  document.addEventListener('mousemove',(e)=>{
+    spots.forEach(s=>{
+      const r=s.getBoundingClientRect();
+      s.style.setProperty('--mx',(e.clientX-r.left)+'px');
+      s.style.setProperty('--my',(e.clientY-r.top)+'px');
+    });
+  },{passive:true});
+}
+
+// magnetic buttons
+if(canHover && !reduced){
+  document.querySelectorAll('.magnetic').forEach(btn=>{
+    btn.addEventListener('mousemove',(e)=>{
+      const r=btn.getBoundingClientRect();
+      const x=(e.clientX-r.left-r.width/2)*.25, y=(e.clientY-r.top-r.height/2)*.35;
+      btn.style.transform=`translate(${x}px,${y}px)`;
+    });
+    btn.addEventListener('mouseleave',()=>btn.style.transform='');
+  });
+}
+
+// project preview follows cursor
+const list=document.getElementById('worklist'),preview=document.getElementById('preview');
+if(canHover && list && preview){
+  list.querySelectorAll('.work-row').forEach(row=>{
+    row.addEventListener('mouseenter',()=>{preview.style.background=row.dataset.dot;preview.textContent=row.dataset.letter;preview.classList.add('show');});
+    row.addEventListener('mousemove',(e)=>{const lr=list.getBoundingClientRect();preview.style.top=(e.clientY-lr.top)+'px';});
+    row.addEventListener('mouseleave',()=>preview.classList.remove('show'));
+  });
+}
+
+// copy email
+const emailBtn=document.getElementById('emailBtn'),copyNote=document.getElementById('copyNote');
+let noteTimer;
+emailBtn.addEventListener('click',async()=>{
+  try{await navigator.clipboard.writeText('jaywebs0@gmail.com');copyNote.classList.add('show');clearTimeout(noteTimer);noteTimer=setTimeout(()=>copyNote.classList.remove('show'),1800);}
+  catch(err){window.location.href='mailto:jaywebs0@gmail.com';}
+});
+
+// hero canvas network field
+(function(){
+  const canvas=document.getElementById('field');
+  if(!canvas)return;
+  const ctx=canvas.getContext('2d');
+  let w,h,pts=[];
+  const isDark=()=>window.matchMedia('(prefers-color-scheme: dark)').matches && document.documentElement.getAttribute('data-theme')!=='light' || document.documentElement.getAttribute('data-theme')==='dark';
+  function resize(){
+    const hero=canvas.closest('.hero');
+    w=canvas.width=hero.offsetWidth; h=canvas.height=hero.offsetHeight;
+    const count=Math.min(60,Math.floor(w/26));
+    pts=Array.from({length:count},()=>({x:Math.random()*w,y:Math.random()*h,vx:(Math.random()-.5)*.18,vy:(Math.random()-.5)*.18}));
+  }
+  function draw(){
+    ctx.clearRect(0,0,w,h);
+    const col=isDark()?'242,241,236':'14,15,18';
+    pts.forEach(p=>{
+      p.x+=p.vx; p.y+=p.vy;
+      if(p.x<0||p.x>w)p.vx*=-1; if(p.y<0||p.y>h)p.vy*=-1;
+    });
+    for(let i=0;i<pts.length;i++){
+      for(let j=i+1;j<pts.length;j++){
+        const dx=pts[i].x-pts[j].x, dy=pts[i].y-pts[j].y, d=Math.hypot(dx,dy);
+        if(d<130){ctx.strokeStyle=`rgba(${col},${.09*(1-d/130)})`;ctx.lineWidth=1;ctx.beginPath();ctx.moveTo(pts[i].x,pts[i].y);ctx.lineTo(pts[j].x,pts[j].y);ctx.stroke();}
+      }
+      ctx.fillStyle=`rgba(${col},.22)`;ctx.beginPath();ctx.arc(pts[i].x,pts[i].y,1.6,0,Math.PI*2);ctx.fill();
+    }
+    if(!reduced)requestAnimationFrame(draw);
+  }
+  window.addEventListener('resize',resize,{passive:true});
+  resize();
+  if(!reduced)requestAnimationFrame(draw); else draw();
+})();
+</script>
+</body>
+</html>
